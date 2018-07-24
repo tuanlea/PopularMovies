@@ -1,5 +1,7 @@
 package com.example.tle.popularmovies;
 
-public interface TaskResponseHandler {
+import java.net.URL;
+
+public interface TaskHandler {
     void handleTaskResponse(String json);
 }

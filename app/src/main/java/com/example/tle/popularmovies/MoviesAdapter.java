@@ -37,6 +37,7 @@ public class MoviesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView = new ImageView(context);
+        imageView.setAdjustViewBounds(true);
         Picasso.with(context).load(movies.get(position).getPosterURL()).into(imageView);
         return imageView;
     }

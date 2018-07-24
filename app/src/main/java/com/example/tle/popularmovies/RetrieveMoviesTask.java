@@ -11,14 +11,14 @@ import java.net.URL;
  */
 public class RetrieveMoviesTask extends AsyncTask<URL, Void, String> {
 
-    TaskResponseHandler taskResponseHandler;
+    TaskHandler taskHandler;
 
     @Override
     protected String doInBackground(URL... urls) {
         try {
-            return NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl());
+            return NetworkUtils.getResponseFromHttpUrl(urls[0]);
         } catch (IOException e) {
-            Log.e("RetrieveMoviesTask", "io exception", e);
+            Log.e("handleDoInBackGround", "io exception", e);
         }
         return "";
     }
@@ -26,6 +26,6 @@ public class RetrieveMoviesTask extends AsyncTask<URL, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        taskResponseHandler.handleTaskResponse(s);
+        taskHandler.handleTaskResponse(s);
     }
 }

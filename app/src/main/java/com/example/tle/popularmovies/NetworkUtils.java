@@ -1,9 +1,6 @@
 package com.example.tle.popularmovies;
 
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.JsonReader;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +9,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Scanner;
 
 public class NetworkUtils {
 
@@ -25,20 +21,13 @@ public class NetworkUtils {
     /**
      *
      */
-    public static URL buildUrl() {
+    public static URL buildUrl(String sort) throws MalformedURLException {
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(KEY_QUERY, "")
-                .appendQueryParameter(SORT_QUERY, "popularity.desc")
+                .appendQueryParameter(SORT_QUERY, sort)
                 .build();
 
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return url;
+        return new URL(builtUri.toString());
     }
 
     /**
