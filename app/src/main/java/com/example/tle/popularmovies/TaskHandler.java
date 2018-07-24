@@ -1,7 +1,7 @@
 package com.example.tle.popularmovies;
 
-import java.net.URL;
+import java.io.IOException;
 
 public interface TaskHandler {
-    void handleTaskResponse(String json);
+    void handleTaskResponse(String json, IOException e);
 }

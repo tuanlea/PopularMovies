@@ -33,8 +33,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         overviewTv.setText(movie.getOverview());
 
         ImageView imageView = findViewById(R.id.image_iv);
+        imageView.setAdjustViewBounds(true);
         Picasso.with(this).load(movie.getPosterURL()).into(imageView);
-
-        setTitle(movie.getTitle());
     }
 }

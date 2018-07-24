@@ -4,4 +4,10 @@
     <string name="title_activity_movie_detail">MovieDetailActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="detail_image_iv_content_label">Movie poster image</string>
+    <string name="detail_title_label">Title</string>
+    <string name="detail_release_date_label">Release Date</string>
+    <string name="detail_vote_average_label">Vote Average</string>
+    <string name="detail_overview_label">Overview</string>
 </resources>

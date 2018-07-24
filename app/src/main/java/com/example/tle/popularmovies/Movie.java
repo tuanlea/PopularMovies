@@ -5,25 +5,26 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
-    final String BASE = "http://image.tmdb.org/t/p/";
-    final String SIZE = "w185";
+    private final String BASE;
+    private final String SIZE = "w185";
 
-    String title;
-    String releaseDate;
-    String posterPath;
-    String voteAverage;
-    String overview;
+    private String title;
+    private String releaseDate;
+    private String posterPath;
+    private String voteAverage;
+    private String overview;
 
-    protected Movie() {
+    Movie() {
+        BASE = "http://image.tmdb.org/t/p/";
     }
 
-    protected Movie(Parcel in) {
-
+    private Movie(Parcel in) {
         title = in.readString();
         releaseDate = in.readString();
         posterPath = in.readString();
         voteAverage = in.readString();
         overview = in.readString();
+        BASE = "http://image.tmdb.org/t/p/";
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {

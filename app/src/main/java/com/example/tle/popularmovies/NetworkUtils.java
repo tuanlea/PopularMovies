@@ -12,19 +12,17 @@ import java.net.URL;
 
 public class NetworkUtils {
 
-    final static String BASE_URL =
-            "http://api.themoviedb.org/3/discover/movie/";
+    final static String BASE_URL = "http://api.themoviedb.org/3/movie/";
 
     final static String KEY_QUERY = "api_key";
-    final static String SORT_QUERY = "sort_by";
 
     /**
      *
      */
     public static URL buildUrl(String sort) throws MalformedURLException {
-        Uri builtUri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter(KEY_QUERY, "")
-                .appendQueryParameter(SORT_QUERY, sort)
+        String url = BASE_URL + sort;
+        Uri builtUri = Uri.parse(url).buildUpon()
+                .appendQueryParameter(KEY_QUERY, BuildConfig.MOVIES_API_KEY)
                 .build();
 
         return new URL(builtUri.toString());

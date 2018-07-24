@@ -16,21 +16,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class MainDiscoveryActivity extends AppCompatActivity implements TaskHandler {
-    String SORT_POPULARITY = "popularity.desc";
-    String SORT_RATING = "vote_average.desc";
+    String SORT_POPULAR = "popular";
+    String SORT_RATING = "top_rated";
     ArrayList<Movie> movies = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_discovery);
-
-        getPopularMovies();
-
+        getMovies(SORT_POPULAR);
     }
 
     @Override
@@ -45,32 +44,21 @@ public class MainDiscoveryActivity extends AppCompatActivity implements TaskHand
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.popularity:
-                getPopularMovies();
+                getMovies(SORT_POPULAR);
                 return true;
             case R.id.rating:
-                getHighestRatedMovies();
+                getMovies(SORT_RATING);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
-    private void getHighestRatedMovies() {
+    private void getMovies(String sort) {
         RetrieveMoviesTask retrieveMoviesTask = new RetrieveMoviesTask();
         retrieveMoviesTask.taskHandler = this;
         try {
-            retrieveMoviesTask.execute(NetworkUtils.buildUrl(SORT_RATING));
-        } catch (MalformedURLException e) {
-            Toast.makeText(getApplicationContext(), "Malformed URL", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void getPopularMovies() {
-        RetrieveMoviesTask retrieveMoviesTask = new RetrieveMoviesTask();
-        retrieveMoviesTask.taskHandler = this;
-        try {
-            retrieveMoviesTask.execute(NetworkUtils.buildUrl(SORT_POPULARITY));
+            retrieveMoviesTask.execute(NetworkUtils.buildUrl(sort));
         } catch (MalformedURLException e) {
             Toast.makeText(getApplicationContext(), "Malformed URL", Toast.LENGTH_SHORT).show();
         }
@@ -80,12 +68,12 @@ public class MainDiscoveryActivity extends AppCompatActivity implements TaskHand
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startMovieDetailActivity(parent, view, position, id);
+                startMovieDetailActivity(position);
             }
         };
     }
 
-    private void startMovieDetailActivity(AdapterView<?> parent, View view, int position, long id) {
+    private void startMovieDetailActivity(int position) {
         Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class);
         Movie movie = movies.get(position);
         intent.putExtra("movie", movie);
@@ -93,13 +81,16 @@ public class MainDiscoveryActivity extends AppCompatActivity implements TaskHand
     }
 
     @Override
-    public void handleTaskResponse(String json) {
+    public void handleTaskResponse(String json, IOException ex) {
+        if (ex != null) {
+            Toast.makeText(this, "Error retrieving movies data.", Toast.LENGTH_LONG).show();
+        }
         try {
             parseMovies(json);
             bindMoviesToView();
         } catch (JSONException e) {
             Log.e("handleTaskResponse", "json exception", e);
-            Toast.makeText(this, "JSON error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error retrieving movies data.", Toast.LENGTH_LONG).show();
         }
     }
 

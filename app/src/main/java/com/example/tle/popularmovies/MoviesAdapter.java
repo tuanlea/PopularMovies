@@ -11,10 +11,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class MoviesAdapter extends BaseAdapter {
-    Context context;
-    ArrayList<Movie> movies;
+    private Context context;
+    private ArrayList<Movie> movies;
 
-    public MoviesAdapter(Context context, ArrayList<Movie> movies) {
+    MoviesAdapter(Context context, ArrayList<Movie> movies) {
        this.context = context;
        this.movies = movies;
     }

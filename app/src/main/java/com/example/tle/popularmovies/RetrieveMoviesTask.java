@@ -2,6 +2,7 @@ package com.example.tle.popularmovies;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,6 +13,7 @@ import java.net.URL;
 public class RetrieveMoviesTask extends AsyncTask<URL, Void, String> {
 
     TaskHandler taskHandler;
+    IOException e;
 
     @Override
     protected String doInBackground(URL... urls) {
@@ -19,6 +21,7 @@ public class RetrieveMoviesTask extends AsyncTask<URL, Void, String> {
             return NetworkUtils.getResponseFromHttpUrl(urls[0]);
         } catch (IOException e) {
             Log.e("handleDoInBackGround", "io exception", e);
+            this.e = e;
         }
         return "";
     }
@@ -26,6 +29,6 @@ public class RetrieveMoviesTask extends AsyncTask<URL, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        taskHandler.handleTaskResponse(s);
+        taskHandler.handleTaskResponse(s, e);
     }
 }
