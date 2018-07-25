@@ -49,9 +49,17 @@ public class MainDiscoveryActivity extends AppCompatActivity implements TaskHand
             case R.id.rating:
                 getMovies(SORT_RATING);
                 return true;
+            case R.id.favorite:
+                startFavoriteActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void startFavoriteActivity() {
+        Intent intent = new Intent(getApplicationContext(), FavoriteMovieActivity.class);
+        startActivity(intent);
     }
 
     private void getMovies(String sort) {
@@ -108,6 +116,7 @@ public class MainDiscoveryActivity extends AppCompatActivity implements TaskHand
         JSONArray results = obj.getJSONArray("results");
         for (int i = 0; i < results.length(); i++) {
             JSONObject movieObj = results.getJSONObject(i);
+            String id = movieObj.getString("id");
             String title = movieObj.getString("title");
             String releaseDate = movieObj.getString("release_date");
             String posterPath = movieObj.getString("poster_path");
@@ -115,6 +124,7 @@ public class MainDiscoveryActivity extends AppCompatActivity implements TaskHand
             String overview = movieObj.getString("overview");
 
             Movie movie = new Movie();
+            movie.setId(id);
             movie.setTitle(title);
             movie.setReleaseDate(releaseDate);
             movie.setPosterPath(posterPath);

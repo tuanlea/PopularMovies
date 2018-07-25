@@ -7,6 +7,8 @@
                 android:title="Popularity" />
             <item android:id="@+id/rating"
                 android:title="Rating" />
+            <item android:id="@+id/favorite"
+                android:title="Favorite" />
         </menu>
     </item>
 </menu>

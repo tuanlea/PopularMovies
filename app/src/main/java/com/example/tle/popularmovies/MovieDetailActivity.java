@@ -2,13 +2,20 @@ package com.example.tle.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.tle.popularmovies.data.FavoriteMovie;
+import com.example.tle.popularmovies.data.FavoriteMovieRepository;
 import com.squareup.picasso.Picasso;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements View.OnClickListener {
+
+    FavoriteMovie favoriteMovie = new FavoriteMovie();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +42,20 @@ public class MovieDetailActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.image_iv);
         imageView.setAdjustViewBounds(true);
         Picasso.with(this).load(movie.getPosterURL()).into(imageView);
+
+        favoriteMovie.setId(movie.getId());
+        favoriteMovie.setTitle(movie.getTitle());
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(getApplicationContext(),
+                "Added as favorite.", Toast.LENGTH_LONG).show();
+        FavoriteMovieRepository favoriteMovieRepository =
+                new FavoriteMovieRepository(getApplication());
+        favoriteMovieRepository.insert(favoriteMovie);
     }
 }
