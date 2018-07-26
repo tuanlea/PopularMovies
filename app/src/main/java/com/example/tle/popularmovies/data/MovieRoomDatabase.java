@@ -5,7 +5,9 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {FavoriteMovie.class}, version = 1, exportSchema = false)
+import com.example.tle.popularmovies.model.Movie;
+
+@Database(entities = {Movie.class}, version = 1, exportSchema = false)
 public abstract class MovieRoomDatabase extends RoomDatabase {
 
     private static MovieRoomDatabase INSTANCE;

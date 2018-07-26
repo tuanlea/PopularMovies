@@ -1,22 +1,33 @@
-package com.example.tle.popularmovies;
+package com.example.tle.popularmovies.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
+@Entity(tableName = "favorite_movie_table")
 public class Movie implements Parcelable {
 
-    private final String BASE;
-    private final String SIZE = "w185";
+    @Ignore
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String BASE = "http://image.tmdb.org/t/p/";
 
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "id")
     private String id;
+
+    @NonNull
     private String title;
     private String releaseDate;
     private String posterPath;
     private String voteAverage;
     private String overview;
 
-    Movie() {
-        BASE = "http://image.tmdb.org/t/p/";
+    public Movie() {
     }
 
     private Movie(Parcel in) {
@@ -26,7 +37,6 @@ public class Movie implements Parcelable {
         posterPath = in.readString();
         voteAverage = in.readString();
         overview = in.readString();
-        BASE = "http://image.tmdb.org/t/p/";
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -41,6 +51,7 @@ public class Movie implements Parcelable {
         }
     };
 
+    @NonNull
     public String getId() {
         return id;
     }
@@ -49,6 +60,7 @@ public class Movie implements Parcelable {
         this.id = id;
     }
 
+    @NonNull
     public String getTitle() {
         return title;
     }
@@ -69,7 +81,8 @@ public class Movie implements Parcelable {
         this.posterPath = posterPath;
     }
 
-    public String getPosterURL() {
+    public String getPosterPath() {
+        String SIZE = "w185";
         return BASE + SIZE + posterPath;
     }
 

@@ -4,8 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.tle.popularmovies.data.FavoriteMovie;
-
 class FavoriteMovieHolder extends RecyclerView.ViewHolder {
     public TextView favoriteMovieTitleTv;
 

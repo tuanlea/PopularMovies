@@ -5,14 +5,14 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import com.example.tle.popularmovies.data.FavoriteMovie;
 import com.example.tle.popularmovies.data.FavoriteMovieRepository;
+import com.example.tle.popularmovies.model.Movie;
 
 import java.util.List;
 
 public class FavoriteMovieViewModel extends AndroidViewModel {
     private FavoriteMovieRepository favoriteMovieRepository;
-    private LiveData<List<FavoriteMovie>> allFavoriteMovies;
+    private LiveData<List<Movie>> allFavoriteMovies;
 
     public FavoriteMovieViewModel(@NonNull Application application) {
         super(application);
@@ -20,12 +20,12 @@ public class FavoriteMovieViewModel extends AndroidViewModel {
         allFavoriteMovies = favoriteMovieRepository.getAllFavoriteMovies();
     }
 
-    public LiveData<List<FavoriteMovie>> getAllFavoriteMovies() {
+    public LiveData<List<Movie>> getAllFavoriteMovies() {
         return allFavoriteMovies;
     }
 
-    public void insert(FavoriteMovie favoriteMovie) {
-        favoriteMovieRepository.insert(favoriteMovie);
+    public void insert(Movie movie) {
+        favoriteMovieRepository.insert(movie);
     }
 
 }

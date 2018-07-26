@@ -34,7 +34,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     // Floating action button
-    compile 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
 
     // Room components
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"

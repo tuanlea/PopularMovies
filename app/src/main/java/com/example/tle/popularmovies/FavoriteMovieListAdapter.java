@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.tle.popularmovies.data.FavoriteMovie;
+import com.example.tle.popularmovies.model.Movie;
 
 import java.util.List;
 
 class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder> {
     LayoutInflater layoutInflater;
-    List<FavoriteMovie> allFavoriteMovies;
+    List<Movie> allFavoriteMovies;
 
     public FavoriteMovieListAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
@@ -30,7 +30,7 @@ class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder>
     @Override
     public void onBindViewHolder(FavoriteMovieHolder holder, int position) {
         if (allFavoriteMovies != null) {
-            FavoriteMovie current = allFavoriteMovies.get(position);
+            Movie current = allFavoriteMovies.get(position);
             holder.favoriteMovieTitleTv.setText(current.getTitle());
         } else {
             // Covers the case of data not being ready yet.
@@ -46,7 +46,7 @@ class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder>
         return allFavoriteMovies.size();
     }
 
-    public void setAllFavoriteMovies(List<FavoriteMovie> allFavoriteMovies) {
+    public void setAllFavoriteMovies(List<Movie> allFavoriteMovies) {
         this.allFavoriteMovies = allFavoriteMovies;
         notifyDataSetChanged();
     }

@@ -1,18 +1,14 @@
 package com.example.tle.popularmovies;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.example.tle.popularmovies.data.FavoriteMovie;
-import com.example.tle.popularmovies.data.FavoriteMovieRepository;
+import com.example.tle.popularmovies.model.Movie;
 
 import java.util.List;
 
@@ -31,9 +27,9 @@ public class FavoriteMovieActivity extends AppCompatActivity {
         FavoriteMovieViewModel favoriteMovieViewModel
                 = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
         favoriteMovieViewModel.getAllFavoriteMovies().observe(this,
-                new Observer<List<FavoriteMovie>>() {
+                new Observer<List<Movie>>() {
                     @Override
-                    public void onChanged(@Nullable List<FavoriteMovie> favoriteMovies) {
+                    public void onChanged(@Nullable List<Movie> favoriteMovies) {
                         adapter.setAllFavoriteMovies(favoriteMovies);
                     }
                 });

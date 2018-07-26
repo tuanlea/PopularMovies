@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.example.tle.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class MoviesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView = new ImageView(context);
         imageView.setAdjustViewBounds(true);
-        Picasso.with(context).load(movies.get(position).getPosterURL()).into(imageView);
+        Picasso.with(context).load(movies.get(position).getPosterPath()).into(imageView);
         return imageView;
     }
 }

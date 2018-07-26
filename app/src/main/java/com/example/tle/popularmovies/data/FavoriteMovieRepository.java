@@ -4,6 +4,8 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
+import com.example.tle.popularmovies.model.Movie;
+
 import java.util.List;
 
 /**
@@ -13,7 +15,7 @@ import java.util.List;
  */
 public class FavoriteMovieRepository {
     private FavoriteMovieDao favoriteMovieDao;
-    private LiveData<List<FavoriteMovie>> allFavoriteMovies;
+    private LiveData<List<Movie>> allFavoriteMovies;
 
     public FavoriteMovieRepository(Application application){
         MovieRoomDatabase db = MovieRoomDatabase.getDatabase(application);
@@ -21,15 +23,15 @@ public class FavoriteMovieRepository {
         allFavoriteMovies = favoriteMovieDao.getFavoriteMovieList();
     }
 
-    public LiveData<List<FavoriteMovie>> getAllFavoriteMovies() {
+    public LiveData<List<Movie>> getAllFavoriteMovies() {
         return allFavoriteMovies;
     }
 
-    public void insert(FavoriteMovie favoriteMovie) {
-        new insertAsyncTask(favoriteMovieDao).execute(favoriteMovie);
+    public void insert(Movie movie) {
+        new insertAsyncTask(favoriteMovieDao).execute(movie);
     }
 
-    static class insertAsyncTask extends AsyncTask<FavoriteMovie, Void, Void> {
+    static class insertAsyncTask extends AsyncTask<Movie, Void, Void> {
         private FavoriteMovieDao asyncTaskDao;
 
         insertAsyncTask(FavoriteMovieDao dao) {
@@ -37,8 +39,8 @@ public class FavoriteMovieRepository {
         }
 
         @Override
-        protected Void doInBackground(FavoriteMovie... favoriteMovies) {
-            asyncTaskDao.insert(favoriteMovies[0]);
+        protected Void doInBackground(Movie... movies) {
+            asyncTaskDao.insert(movies[0]);
             return null;
         }
     }
