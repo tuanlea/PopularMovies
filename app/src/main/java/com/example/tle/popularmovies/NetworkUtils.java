@@ -12,9 +12,9 @@ import java.net.URL;
 
 public class NetworkUtils {
 
-    final static String BASE_URL = "http://api.themoviedb.org/3/movie/";
+    final private static String BASE_URL = "http://api.themoviedb.org/3/movie/";
 
-    final static String KEY_QUERY = "api_key";
+    final private static String KEY_QUERY = "api_key";
 
     /**
      *

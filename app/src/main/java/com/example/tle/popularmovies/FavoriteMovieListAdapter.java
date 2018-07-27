@@ -12,10 +12,10 @@ import com.example.tle.popularmovies.model.Movie;
 import java.util.List;
 
 class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder> {
-    LayoutInflater layoutInflater;
-    List<Movie> allFavoriteMovies;
+    private LayoutInflater layoutInflater;
+    private List<Movie> allFavoriteMovies;
 
-    public FavoriteMovieListAdapter(Context context) {
+    FavoriteMovieListAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -28,13 +28,10 @@ class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder>
     }
 
     @Override
-    public void onBindViewHolder(FavoriteMovieHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FavoriteMovieHolder holder, int position) {
         if (allFavoriteMovies != null) {
             Movie current = allFavoriteMovies.get(position);
             holder.favoriteMovieTitleTv.setText(current.getTitle());
-        } else {
-            // Covers the case of data not being ready yet.
-            holder.favoriteMovieTitleTv.setText("No Favorite Movies");
         }
     }
 

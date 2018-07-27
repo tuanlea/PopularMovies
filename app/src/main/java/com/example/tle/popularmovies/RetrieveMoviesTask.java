@@ -2,7 +2,6 @@ package com.example.tle.popularmovies;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URL;
