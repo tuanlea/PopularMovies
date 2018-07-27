@@ -19,7 +19,7 @@ public class NetworkUtils {
     /**
      *
      */
-    public static URL buildUrl(String sort) throws MalformedURLException {
+    static URL buildUrl(String sort) throws MalformedURLException {
         String url = BASE_URL + sort;
         Uri builtUri = Uri.parse(url).buildUpon()
                 .appendQueryParameter(KEY_QUERY, BuildConfig.MOVIES_API_KEY)
@@ -31,7 +31,7 @@ public class NetworkUtils {
     /**
      *
      */
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setDoInput(true);
         urlConnection.setRequestProperty("Content-Type", "application/json");

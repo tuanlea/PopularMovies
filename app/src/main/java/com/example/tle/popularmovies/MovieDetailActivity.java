@@ -37,18 +37,7 @@ public class MovieDetailActivity extends AppCompatActivity implements View.OnCli
         if (movie == null) {
             return;
         }
-        TextView titleTv = findViewById(R.id.title_tv);
-        titleTv.setText(movie.getTitle());
-        TextView releaseDateTv = findViewById(R.id.release_date_tv);
-        releaseDateTv.setText(movie.getReleaseDate());
-        TextView voteAverageTv = findViewById(R.id.vote_average_tv);
-        voteAverageTv.setText(movie.getVoteAverage());
-        TextView overviewTv = findViewById(R.id.overview_tv);
-        overviewTv.setText(movie.getOverview());
-
-        ImageView imageView = findViewById(R.id.image_iv);
-        imageView.setAdjustViewBounds(true);
-        Picasso.with(this).load(movie.getPosterPath()).into(imageView);
+        setMovieToView(movie);
 
         FavoriteMovieViewModel favoriteMovieViewModel =
                 ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
@@ -60,6 +49,24 @@ public class MovieDetailActivity extends AppCompatActivity implements View.OnCli
                     }
                 });
 
+        // Floating action button
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
+    private void setMovieToView(Movie movie) {
+        TextView titleTv = findViewById(R.id.title_tv);
+        titleTv.setText(movie.getTitle());
+        TextView releaseDateTv = findViewById(R.id.release_date_tv);
+        releaseDateTv.setText(movie.getReleaseDate());
+        TextView voteAverageTv = findViewById(R.id.vote_average_tv);
+        voteAverageTv.setText(movie.getVoteAverage());
+        TextView overviewTv = findViewById(R.id.overview_tv);
+        overviewTv.setText(movie.getOverview());
+
+        ImageView imageView = findViewById(R.id.image_iv);
+        imageView.setAdjustViewBounds(true);
+        Picasso.with(this).load(movie.getPosterPathFull()).into(imageView);
     }
 
     private boolean isFavorite(Movie movie) {
@@ -80,12 +87,12 @@ public class MovieDetailActivity extends AppCompatActivity implements View.OnCli
                 = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
         if (!isFavorite(movie)) {
             Toast.makeText(getApplicationContext(),
-                    "Added as favorite.", Toast.LENGTH_LONG).show();
+                    "Added as favorite.", Toast.LENGTH_SHORT).show();
             favoriteMovieViewModel.insert(movie);
             toggleFab(true);
         } else {
             Toast.makeText(getApplicationContext(),
-                    "Removed as favorite.", Toast.LENGTH_LONG).show();
+                    "Removed as favorite.", Toast.LENGTH_SHORT).show();
             favoriteMovieViewModel.remove(movie);
             toggleFab(false);
         }
@@ -101,12 +108,6 @@ public class MovieDetailActivity extends AppCompatActivity implements View.OnCli
 
     public void setAllFavoriteMovies(List<Movie> allFavoriteMovies) {
         this.allFavoriteMovies = allFavoriteMovies;
-        if (this.allFavoriteMovies == null) {
-            this.allFavoriteMovies = new ArrayList<>();
-        }
-
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(this);
         toggleFab(isFavorite(movie));
     }
 }

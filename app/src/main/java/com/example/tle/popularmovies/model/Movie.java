@@ -82,6 +82,10 @@ public class Movie implements Parcelable {
     }
 
     public String getPosterPath() {
+        return this.posterPath;
+    }
+
+    public String getPosterPathFull() {
         String SIZE = "w185";
         return BASE + SIZE + posterPath;
     }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tle.popularmovies.model.Movie;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -31,7 +32,10 @@ class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder>
     public void onBindViewHolder(@NonNull FavoriteMovieHolder holder, int position) {
         if (allFavoriteMovies != null) {
             Movie current = allFavoriteMovies.get(position);
-            holder.favoriteMovieTitleTv.setText(current.getTitle());
+            String posterPathFull = current.getPosterPathFull();
+            Picasso.with(layoutInflater.getContext())
+                    .load(posterPathFull)
+                    .into(holder.favoriteMovieImageIv);
         }
     }
 
@@ -43,7 +47,7 @@ class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder>
         return allFavoriteMovies.size();
     }
 
-    public void setAllFavoriteMovies(List<Movie> allFavoriteMovies) {
+    void setAllFavoriteMovies(List<Movie> allFavoriteMovies) {
         this.allFavoriteMovies = allFavoriteMovies;
         notifyDataSetChanged();
     }

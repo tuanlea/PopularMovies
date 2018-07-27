@@ -12,7 +12,7 @@ import java.net.URL;
 public class RetrieveMoviesTask extends AsyncTask<URL, Void, String> {
 
     TaskHandler taskHandler;
-    IOException e;
+    private IOException e;
 
     @Override
     protected String doInBackground(URL... urls) {

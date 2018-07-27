@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.tle.popularmovies.model.Movie;
@@ -22,7 +22,7 @@ public class FavoriteMovieActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final FavoriteMovieListAdapter adapter = new FavoriteMovieListAdapter(getApplicationContext());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
 
         FavoriteMovieViewModel favoriteMovieViewModel
                 = ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
@@ -34,4 +34,5 @@ public class FavoriteMovieActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }

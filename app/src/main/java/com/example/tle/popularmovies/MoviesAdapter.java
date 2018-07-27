@@ -39,7 +39,7 @@ public class MoviesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView = new ImageView(context);
         imageView.setAdjustViewBounds(true);
-        Picasso.with(context).load(movies.get(position).getPosterPath()).into(imageView);
+        Picasso.with(context).load(movies.get(position).getPosterPathFull()).into(imageView);
         return imageView;
     }
 }

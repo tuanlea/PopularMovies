@@ -2,13 +2,13 @@ package com.example.tle.popularmovies;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 class FavoriteMovieHolder extends RecyclerView.ViewHolder {
-    public TextView favoriteMovieTitleTv;
+    public ImageView favoriteMovieImageIv;
 
-    public FavoriteMovieHolder(View itemView) {
+    FavoriteMovieHolder(View itemView) {
         super(itemView);
-        favoriteMovieTitleTv = itemView.findViewById(R.id.favorite_movie_title);
+        favoriteMovieImageIv = itemView.findViewById(R.id.favorite_movie_image);
     }
 }
