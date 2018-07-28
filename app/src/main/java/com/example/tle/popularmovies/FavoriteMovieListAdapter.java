@@ -15,9 +15,11 @@ import java.util.List;
 class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder> {
     private LayoutInflater layoutInflater;
     private List<Movie> allFavoriteMovies;
+    OnRecyclerItemClickHandler onRecyclerItemClickHandler;
 
-    FavoriteMovieListAdapter(Context context) {
+    FavoriteMovieListAdapter(Context context, OnRecyclerItemClickHandler onItemClickHandler) {
         layoutInflater = LayoutInflater.from(context);
+        this.onRecyclerItemClickHandler = onItemClickHandler;
     }
 
     @NonNull
@@ -31,11 +33,17 @@ class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder>
     @Override
     public void onBindViewHolder(@NonNull FavoriteMovieHolder holder, int position) {
         if (allFavoriteMovies != null) {
-            Movie current = allFavoriteMovies.get(position);
+            final Movie current = allFavoriteMovies.get(position);
             String posterPathFull = current.getPosterPathFull();
             Picasso.with(layoutInflater.getContext())
                     .load(posterPathFull)
                     .into(holder.favoriteMovieImageIv);
+            holder.favoriteMovieImageIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onRecyclerItemClickHandler.handleRecylerItemClick(v, current);
+                }
+            });
         }
     }
 

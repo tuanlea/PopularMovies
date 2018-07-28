@@ -2,17 +2,20 @@ package com.example.tle.popularmovies;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.tle.popularmovies.model.Movie;
 
 import java.util.List;
 
-public class FavoriteMovieActivity extends AppCompatActivity {
+public class FavoriteMovieActivity extends AppCompatActivity implements OnRecyclerItemClickHandler {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,7 +23,8 @@ public class FavoriteMovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorite_movie);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final FavoriteMovieListAdapter adapter = new FavoriteMovieListAdapter(getApplicationContext());
+        final FavoriteMovieListAdapter adapter =
+                new FavoriteMovieListAdapter(getApplicationContext(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
 
@@ -35,4 +39,14 @@ public class FavoriteMovieActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public void handleRecylerItemClick(View v, Movie movie) {
+        startMovieDetailActivity(movie);
+    }
+
+    private void startMovieDetailActivity(Movie movie) {
+        Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class);
+        intent.putExtra("movie", movie);
+        startActivity(intent);
+    }
 }
