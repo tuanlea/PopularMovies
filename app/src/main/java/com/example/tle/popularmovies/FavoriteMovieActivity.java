@@ -8,8 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.tle.popularmovies.model.Movie;
 
@@ -40,7 +38,7 @@ public class FavoriteMovieActivity extends AppCompatActivity implements OnRecycl
     }
 
     @Override
-    public void handleRecylerItemClick(View v, Movie movie) {
+    public void handleRecylerItemClick(Movie movie) {
         startMovieDetailActivity(movie);
     }
 

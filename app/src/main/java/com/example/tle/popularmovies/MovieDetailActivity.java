@@ -7,20 +7,32 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tle.popularmovies.model.Movie;
+import com.example.tle.popularmovies.model.MovieReview;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class MovieDetailActivity extends AppCompatActivity
+        implements View.OnClickListener, TaskHandler {
 
     Movie movie;
+    List<MovieReview> movieReviews;
+
     FloatingActionButton fab;
     List<Movie> allFavoriteMovies = new ArrayList<>();
 
@@ -38,6 +50,7 @@ public class MovieDetailActivity extends AppCompatActivity implements View.OnCli
             return;
         }
         setMovieToView(movie);
+        retrieveMovieReviews();
 
         FavoriteMovieViewModel favoriteMovieViewModel =
                 ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
@@ -110,4 +123,57 @@ public class MovieDetailActivity extends AppCompatActivity implements View.OnCli
         this.allFavoriteMovies = allFavoriteMovies;
         toggleFab(isFavorite(movie));
     }
+
+    /// movie/{id}/reviews
+    public void retrieveMovieReviews() {
+        try {
+            String reviewPath = movie.getId() + "/reviews";
+            URL url = NetworkUtils.buildUrl(reviewPath);
+
+            RetrieveReviewsTask retrieveReviewsTask = new RetrieveReviewsTask();
+            retrieveReviewsTask.taskHandler = this;
+            retrieveReviewsTask.execute(url);
+        } catch (MalformedURLException e) {
+            Log.e("Movie detail", "malformed url", e);
+            Toast.makeText(getApplicationContext(), "Error getting reviews", Toast.LENGTH_SHORT)
+                .show();
+        }
+    }
+
+    @Override
+    public void handleTaskResponse(String json, IOException e) {
+        if (e != null) {
+            movieReviews = new ArrayList<MovieReview>();
+        }
+        try {
+            movieReviews = getReviewsFromJson(json);
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+            Log.d("Handle review task", "get review failed with json exception", e );
+        }
+
+        return;
+    }
+
+
+    private List<MovieReview> getReviewsFromJson(String json) throws JSONException {
+        List<MovieReview> movieReviews = new ArrayList<>();
+        JSONObject obj = new JSONObject(json);
+        JSONArray results = obj.getJSONArray("results");
+        for (int i = 0; i < results.length(); i++) {
+            JSONObject reviewObj = results.getJSONObject(i);
+            String id = reviewObj.getString("id");
+            String author = reviewObj.getString("author");
+            String content = reviewObj.getString("content");
+
+            MovieReview movieReview = new MovieReview();
+            movieReview.setId(id);
+            movieReview.setAuthor(author);
+            movieReview.setContent(content);
+
+            movieReviews.add(movieReview);
+        }
+        return movieReviews;
+    }
+
 }

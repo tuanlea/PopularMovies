@@ -15,7 +15,7 @@ import java.util.List;
 class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder> {
     private LayoutInflater layoutInflater;
     private List<Movie> allFavoriteMovies;
-    OnRecyclerItemClickHandler onRecyclerItemClickHandler;
+    private OnRecyclerItemClickHandler onRecyclerItemClickHandler;
 
     FavoriteMovieListAdapter(Context context, OnRecyclerItemClickHandler onItemClickHandler) {
         layoutInflater = LayoutInflater.from(context);
@@ -41,7 +41,7 @@ class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder>
             holder.favoriteMovieImageIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onRecyclerItemClickHandler.handleRecylerItemClick(v, current);
+                    onRecyclerItemClickHandler.handleRecylerItemClick(current);
                 }
             });
         }
