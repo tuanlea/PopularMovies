@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies;
+package com.example.tle.popularmovies.detail;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -7,14 +7,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tle.popularmovies.R;
+import com.example.tle.popularmovies.main.TaskHandler;
 import com.example.tle.popularmovies.model.Movie;
 import com.example.tle.popularmovies.model.MovieReview;
+import com.example.tle.popularmovies.ui.FavoriteMovieViewModel;
+import com.example.tle.popularmovies.util.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -28,10 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity
-        implements View.OnClickListener, TaskHandler {
+        implements TaskHandler, View.OnClickListener {
 
     Movie movie;
-    List<MovieReview> movieReviews;
 
     FloatingActionButton fab;
     List<Movie> allFavoriteMovies = new ArrayList<>();
@@ -52,6 +58,14 @@ public class MovieDetailActivity extends AppCompatActivity
         setMovieToView(movie);
         retrieveMovieReviews();
 
+        getAllFavoriteMovies();
+
+        // Floating action button
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
+    private void getAllFavoriteMovies() {
         FavoriteMovieViewModel favoriteMovieViewModel =
                 ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
         favoriteMovieViewModel.getAllFavoriteMovies().observe(this,
@@ -61,10 +75,15 @@ public class MovieDetailActivity extends AppCompatActivity
                         setAllFavoriteMovies(allFavoriteMovies);
                     }
                 });
+    }
 
-        // Floating action button
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+    private void setReviewsToView(List<MovieReview> movieReviews) {
+        RecyclerView recyclerView = findViewById(R.id.movie_reviews_rv);
+        final MovieReviewListAdapter adapter =
+                new MovieReviewListAdapter(getApplicationContext());
+        adapter.setMovieReviews(movieReviews);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
     private void setMovieToView(Movie movie) {
@@ -143,8 +162,11 @@ public class MovieDetailActivity extends AppCompatActivity
     @Override
     public void handleTaskResponse(String json, IOException e) {
         if (e != null) {
-            movieReviews = new ArrayList<MovieReview>();
+            Toast.makeText(getApplicationContext(), "Failed to get movie reviews.",
+                    Toast.LENGTH_SHORT);
+            return;
         }
+        List<MovieReview> movieReviews = new ArrayList<>();
         try {
             movieReviews = getReviewsFromJson(json);
         } catch (JSONException jsonException) {
@@ -152,9 +174,8 @@ public class MovieDetailActivity extends AppCompatActivity
             Log.d("Handle review task", "get review failed with json exception", e );
         }
 
-        return;
+        setReviewsToView(movieReviews);
     }
-
 
     private List<MovieReview> getReviewsFromJson(String json) throws JSONException {
         List<MovieReview> movieReviews = new ArrayList<>();
@@ -175,5 +196,6 @@ public class MovieDetailActivity extends AppCompatActivity
         }
         return movieReviews;
     }
+
 
 }

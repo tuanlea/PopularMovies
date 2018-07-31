@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies;
+package com.example.tle.popularmovies.main;
 
 import android.content.Context;
 import android.view.View;
@@ -15,7 +15,7 @@ public class MoviesAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Movie> movies;
 
-    MoviesAdapter(Context context, ArrayList<Movie> movies) {
+    public MoviesAdapter(Context context, ArrayList<Movie> movies) {
        this.context = context;
        this.movies = movies;
     }

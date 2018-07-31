@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies;
+package com.example.tle.popularmovies.favorite;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -9,7 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.tle.popularmovies.detail.MovieDetailActivity;
+import com.example.tle.popularmovies.R;
 import com.example.tle.popularmovies.model.Movie;
+import com.example.tle.popularmovies.ui.FavoriteMovieListAdapter;
+import com.example.tle.popularmovies.ui.FavoriteMovieViewModel;
+import com.example.tle.popularmovies.ui.OnRecyclerItemClickHandler;
 
 import java.util.List;
 

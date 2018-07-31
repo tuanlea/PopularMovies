@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies;
+package com.example.tle.popularmovies.ui;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -20,15 +20,15 @@ public class FavoriteMovieViewModel extends AndroidViewModel {
         allFavoriteMovies = favoriteMovieRepository.getAllFavoriteMovies();
     }
 
-    LiveData<List<Movie>> getAllFavoriteMovies() {
+    public LiveData<List<Movie>> getAllFavoriteMovies() {
         return allFavoriteMovies;
     }
 
-    void insert(Movie movie) {
+    public void insert(Movie movie) {
         favoriteMovieRepository.insert(movie);
     }
 
-    void remove(Movie movie) {
+    public void remove(Movie movie) {
         favoriteMovieRepository.remove(movie);
     }
 }

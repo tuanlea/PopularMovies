@@ -1,6 +1,8 @@
-package com.example.tle.popularmovies;
+package com.example.tle.popularmovies.util;
 
 import android.net.Uri;
+
+import com.example.tle.popularmovies.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +21,7 @@ public class NetworkUtils {
     /**
      *
      */
-    static URL buildUrl(String sort) throws MalformedURLException {
+    public static URL buildUrl(String sort) throws MalformedURLException {
         String url = BASE_URL + sort;
         Uri builtUri = Uri.parse(url).buildUpon()
                 .appendQueryParameter(KEY_QUERY, BuildConfig.MOVIES_API_KEY)
@@ -31,7 +33,7 @@ public class NetworkUtils {
     /**
      *
      */
-    static String getResponseFromHttpUrl(URL url) throws IOException {
+    public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setDoInput(true);
         urlConnection.setRequestProperty("Content-Type", "application/json");

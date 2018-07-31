@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies;
+package com.example.tle.popularmovies.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,11 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.example.tle.popularmovies.detail.MovieDetailActivity;
+import com.example.tle.popularmovies.detail.RetrieveMoviesTask;
+import com.example.tle.popularmovies.util.NetworkUtils;
+import com.example.tle.popularmovies.R;
+import com.example.tle.popularmovies.favorite.FavoriteMovieActivity;
 import com.example.tle.popularmovies.model.Movie;
 
 import org.json.JSONArray;

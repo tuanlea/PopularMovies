@@ -1,7 +1,10 @@
-package com.example.tle.popularmovies;
+package com.example.tle.popularmovies.detail;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.tle.popularmovies.main.TaskHandler;
+import com.example.tle.popularmovies.util.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -11,7 +14,7 @@ import java.net.URL;
  */
 public class RetrieveMoviesTask extends AsyncTask<URL, Void, String> {
 
-    TaskHandler taskHandler;
+    public TaskHandler taskHandler;
     private IOException e;
 
     @Override

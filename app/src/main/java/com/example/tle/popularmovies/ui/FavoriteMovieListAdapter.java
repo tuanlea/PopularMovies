@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies;
+package com.example.tle.popularmovies.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,17 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.tle.popularmovies.R;
 import com.example.tle.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder> {
+public class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder> {
     private LayoutInflater layoutInflater;
     private List<Movie> allFavoriteMovies;
     private OnRecyclerItemClickHandler onRecyclerItemClickHandler;
 
-    FavoriteMovieListAdapter(Context context, OnRecyclerItemClickHandler onItemClickHandler) {
+    public FavoriteMovieListAdapter(Context context, OnRecyclerItemClickHandler onItemClickHandler) {
         layoutInflater = LayoutInflater.from(context);
         this.onRecyclerItemClickHandler = onItemClickHandler;
     }
@@ -55,7 +56,7 @@ class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder>
         return allFavoriteMovies.size();
     }
 
-    void setAllFavoriteMovies(List<Movie> allFavoriteMovies) {
+    public void setAllFavoriteMovies(List<Movie> allFavoriteMovies) {
         this.allFavoriteMovies = allFavoriteMovies;
         notifyDataSetChanged();
     }

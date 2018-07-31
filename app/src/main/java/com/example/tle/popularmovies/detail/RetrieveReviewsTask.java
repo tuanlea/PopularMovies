@@ -1,14 +1,17 @@
-package com.example.tle.popularmovies;
+package com.example.tle.popularmovies.detail;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.tle.popularmovies.main.TaskHandler;
+import com.example.tle.popularmovies.util.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
 
 // Param, Progress, Result
-class RetrieveReviewsTask extends AsyncTask<URL, Void, String> {
-    TaskHandler taskHandler;
+public class RetrieveReviewsTask extends AsyncTask<URL, Void, String> {
+    public TaskHandler taskHandler;
     private IOException ioException;
 
     @Override
