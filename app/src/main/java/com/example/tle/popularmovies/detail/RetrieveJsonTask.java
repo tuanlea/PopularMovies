@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 
 // Param, Progress, Result
-public class RetrieveReviewsTask extends AsyncTask<URL, Void, String> {
+public class RetrieveJsonTask extends AsyncTask<URL, Void, String> {
     public TaskHandler taskHandler;
     private IOException ioException;
 
