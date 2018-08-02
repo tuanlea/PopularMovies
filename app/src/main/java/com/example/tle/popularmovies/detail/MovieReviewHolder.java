@@ -9,6 +9,7 @@ import com.example.tle.popularmovies.R;
 class MovieReviewHolder extends RecyclerView.ViewHolder {
     TextView authorTv;
     TextView contentTv;
+
     public MovieReviewHolder(View itemView) {
         super(itemView);
         authorTv = itemView.findViewById(R.id.author_tv);

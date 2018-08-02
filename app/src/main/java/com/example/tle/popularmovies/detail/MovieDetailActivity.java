@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -16,25 +17,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tle.popularmovies.R;
-import com.example.tle.popularmovies.main.TaskHandler;
 import com.example.tle.popularmovies.model.Movie;
 import com.example.tle.popularmovies.model.MovieReview;
 import com.example.tle.popularmovies.ui.FavoriteMovieViewModel;
 import com.example.tle.popularmovies.util.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity
-        implements TaskHandler, View.OnClickListener {
+        implements View.OnClickListener {
 
     Movie movie;
 
@@ -45,18 +40,11 @@ public class MovieDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle == null) {
-            return;
-        }
-        movie = bundle.getParcelable("movie");
-        if (movie == null) {
-            return;
-        }
-        setMovieToView(movie);
-        retrieveMovieReviews();
 
+        movie = getMovie();
+        setMovieToView();
+
+        retrieveMovieReviews();
         retrieveTrailers();
 
         getAllFavoriteMovies();
@@ -66,50 +54,23 @@ public class MovieDetailActivity extends AppCompatActivity
         fab.setOnClickListener(this);
     }
 
+    private Movie getMovie() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle == null) {
+            return null;
+        }
+        return bundle.getParcelable("movie");
+    }
+
     private void retrieveTrailers() {
         try {
             String trailerPath = movie.getId() + "/videos";
             URL url = NetworkUtils.buildUrl(trailerPath);
 
             RetrieveJsonTask retrieveJsonTask = new RetrieveJsonTask();
-            retrieveJsonTask.taskHandler = new TaskHandler() {
-                @Override
-                public void handleTaskResponse(String json, IOException e) {
-                    if (e != null) {
-                        Toast.makeText(getApplicationContext(), "Failed to get trailers.",
-                                Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    List<Trailer> trailers = new ArrayList<>();
-                    try {
-                        trailers = getTrailersFromJson(json);
-                    } catch (JSONException jsonException) {
-                        jsonException.printStackTrace();
-                        Log.d("Handle review task", "get review failed with json exception",
-                                jsonException);
-                    }
-
-                    // set trailers to views
-                }
-
-                private List<Trailer> getTrailersFromJson(String json) throws JSONException {
-                    List<MovieReview> movieReviews = new ArrayList<>();
-                    JSONObject obj = new JSONObject(json);
-                    JSONArray results = obj.getJSONArray("results");
-                    for (int i = 0; i < results.length(); i++) {
-                        JSONObject reviewObj = results.getJSONObject(i);
-                        String id = reviewObj.getString("id");
-                        String isoOne = reviewObj.getString("iso_639_1");
-                        String isoTwo = reviewObj.getString("iso_639_1");
-                        String name = reviewObj.getString("iso_639_1");
-                        String site = reviewObj.getString("iso_3166_1");
-                        String size = reviewObj.getString("iso_3166_1");
-                        String type = reviewObj.getString("iso_3166_1");
-
-                    }
-                    return null;
-                }
-            };
+            retrieveJsonTask.taskHandler = new TrailerTaskHandler(getApplicationContext(),
+                    this);
             retrieveJsonTask.execute(url);
         } catch (MalformedURLException e) {
             Log.e("Movie detail", "malformed url", e);
@@ -121,27 +82,25 @@ public class MovieDetailActivity extends AppCompatActivity
     private void getAllFavoriteMovies() {
         FavoriteMovieViewModel favoriteMovieViewModel =
                 ViewModelProviders.of(this).get(FavoriteMovieViewModel.class);
-        favoriteMovieViewModel.getAllFavoriteMovies().observe(this,
-                new Observer<List<Movie>>() {
-                    @Override
-                    public void onChanged(@Nullable List<Movie> allFavoriteMovies) {
-                        setAllFavoriteMovies(allFavoriteMovies);
-                        toggleFab(isFavorite(movie));
-                    }
-                });
+        favoriteMovieViewModel.getAllFavoriteMovies().observe(this, getObserver());
     }
 
-    private void setReviewsToView(List<MovieReview> movieReviews) {
-        RecyclerView recyclerView = findViewById(R.id.movie_reviews_rv);
-        final MovieReviewListAdapter adapter =
-                new MovieReviewListAdapter(getApplicationContext());
-        adapter.setMovieReviews(movieReviews);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
-                LinearLayoutManager.HORIZONTAL, false));
+    @NonNull
+    private Observer<List<Movie>> getObserver() {
+        return new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> allFavoriteMovies) {
+                setAllFavoriteMovies(allFavoriteMovies);
+                toggleFab(isFavorite(movie));
+            }
+        };
     }
 
-    private void setMovieToView(Movie movie) {
+    public void setAllFavoriteMovies(List<Movie> allFavoriteMovies) {
+        this.allFavoriteMovies = allFavoriteMovies;
+    }
+
+    private void setMovieToView() {
         TextView titleTv = findViewById(R.id.title_tv);
         titleTv.setText(movie.getTitle());
         TextView releaseDateTv = findViewById(R.id.release_date_tv);
@@ -193,10 +152,6 @@ public class MovieDetailActivity extends AppCompatActivity
         }
     }
 
-    public void setAllFavoriteMovies(List<Movie> allFavoriteMovies) {
-        this.allFavoriteMovies = allFavoriteMovies;
-    }
-
     /// movie/{id}/reviews
     public void retrieveMovieReviews() {
         try {
@@ -204,7 +159,8 @@ public class MovieDetailActivity extends AppCompatActivity
             URL url = NetworkUtils.buildUrl(reviewPath);
 
             RetrieveJsonTask retrieveJsonTask = new RetrieveJsonTask();
-            retrieveJsonTask.taskHandler = this;
+            retrieveJsonTask.taskHandler = new ReviewTaskHandler(getApplicationContext(),
+                    this);
             retrieveJsonTask.execute(url);
         } catch (MalformedURLException e) {
             Log.e("Movie detail", "malformed url", e);
@@ -213,44 +169,22 @@ public class MovieDetailActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void handleTaskResponse(String json, IOException e) {
-        if (e != null) {
-            Toast.makeText(getApplicationContext(), "Failed to get movie reviews.",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-        List<MovieReview> movieReviews = new ArrayList<>();
-        try {
-            movieReviews = getReviewsFromJson(json);
-        } catch (JSONException jsonException) {
-            jsonException.printStackTrace();
-            Log.d("Handle review task", "get review failed with json exception",
-                    jsonException);
-        }
-
-        setReviewsToView(movieReviews);
+    public void setReviewsToView(List<MovieReview> movieReviews) {
+        RecyclerView recyclerView = findViewById(R.id.movie_reviews_rv);
+        final MovieReviewListAdapter adapter =
+                new MovieReviewListAdapter(getApplicationContext());
+        adapter.setMovieReviews(movieReviews);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
+                LinearLayoutManager.HORIZONTAL, false));
     }
 
-    private List<MovieReview> getReviewsFromJson(String json) throws JSONException {
-        List<MovieReview> movieReviews = new ArrayList<>();
-        JSONObject obj = new JSONObject(json);
-        JSONArray results = obj.getJSONArray("results");
-        for (int i = 0; i < results.length(); i++) {
-            JSONObject reviewObj = results.getJSONObject(i);
-            String id = reviewObj.getString("id");
-            String author = reviewObj.getString("author");
-            String content = reviewObj.getString("content");
-
-            MovieReview movieReview = new MovieReview();
-            movieReview.setId(id);
-            movieReview.setAuthor(author);
-            movieReview.setContent(content);
-
-            movieReviews.add(movieReview);
-        }
-        return movieReviews;
+    public void setTrailersToView(List<Trailer> trailers) {
+        RecyclerView recyclerView = findViewById(R.id.movie_trailers_rv);
+        TrailerListAdapter adapter = new TrailerListAdapter(getApplicationContext());
+        adapter.setTrailers(trailers);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
+                LinearLayoutManager.VERTICAL, false));
     }
-
-
 }
