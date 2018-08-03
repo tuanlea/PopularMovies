@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies.main;
+package com.example.tle.popularmovies.ui;
 
 import android.content.Context;
 import android.view.View;

@@ -13,6 +13,7 @@ import com.example.tle.popularmovies.detail.MovieDetailActivity;
 import com.example.tle.popularmovies.R;
 import com.example.tle.popularmovies.model.Movie;
 import com.example.tle.popularmovies.ui.FavoriteMovieViewModel;
+import com.example.tle.popularmovies.ui.MovieListAdapter;
 
 import java.util.List;
 
@@ -24,8 +25,8 @@ public class FavoriteMovieActivity extends AppCompatActivity implements OnFavori
         setContentView(R.layout.activity_favorite_movie);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final FavoriteMovieListAdapter adapter =
-                new FavoriteMovieListAdapter(getApplicationContext(), this);
+        final MovieListAdapter adapter =
+                new MovieListAdapter(getApplicationContext(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
 

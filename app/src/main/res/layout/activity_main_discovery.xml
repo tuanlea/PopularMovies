@@ -5,12 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".main.MainDiscoveryActivity">
 
-    <GridView
-        android:id="@+id/gridview"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_movies_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:stretchMode="columnWidth"
-        android:numColumns="auto_fit">
-    </GridView>
+        android:background="@android:color/darker_gray"
+        tools:listitem="@layout/movie_image_item" />
 
 </android.support.constraint.ConstraintLayout>

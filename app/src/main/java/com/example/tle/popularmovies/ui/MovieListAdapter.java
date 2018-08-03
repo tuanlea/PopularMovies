@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies.favorite;
+package com.example.tle.popularmovies.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,38 +8,39 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tle.popularmovies.R;
+import com.example.tle.popularmovies.favorite.OnFavoriteMovieClickHandler;
 import com.example.tle.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder> {
+public class MovieListAdapter extends RecyclerView.Adapter<MovieHolder> {
     private LayoutInflater layoutInflater;
     private List<Movie> allFavoriteMovies;
     private OnFavoriteMovieClickHandler onFavoriteMovieClickHandler;
 
-    public FavoriteMovieListAdapter(Context context, OnFavoriteMovieClickHandler onItemClickHandler) {
+    public MovieListAdapter(Context context, OnFavoriteMovieClickHandler onItemClickHandler) {
         layoutInflater = LayoutInflater.from(context);
         this.onFavoriteMovieClickHandler = onItemClickHandler;
     }
 
     @NonNull
     @Override
-    public FavoriteMovieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MovieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView =
-                layoutInflater.inflate(R.layout.recyclerview_item, parent, false);
-        return new FavoriteMovieHolder(itemView);
+                layoutInflater.inflate(R.layout.movie_image_item, parent, false);
+        return new MovieHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavoriteMovieHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieHolder holder, int position) {
         if (allFavoriteMovies != null) {
             final Movie current = allFavoriteMovies.get(position);
             String posterPathFull = current.getPosterPathFull();
             Picasso.with(layoutInflater.getContext())
                     .load(posterPathFull)
-                    .into(holder.favoriteMovieImageIv);
-            holder.favoriteMovieImageIv.setOnClickListener(new View.OnClickListener() {
+                    .into(holder.movieImageIv);
+            holder.movieImageIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onFavoriteMovieClickHandler.handleFavoriteMovieRecylerItemClick(current);

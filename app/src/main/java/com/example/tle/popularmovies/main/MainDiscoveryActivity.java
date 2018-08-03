@@ -1,41 +1,62 @@
 package com.example.tle.popularmovies.main;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
-import com.example.tle.popularmovies.detail.MovieDetailActivity;
-import com.example.tle.popularmovies.util.NetworkUtils;
 import com.example.tle.popularmovies.R;
+import com.example.tle.popularmovies.detail.MovieDetailActivity;
 import com.example.tle.popularmovies.favorite.FavoriteMovieActivity;
+import com.example.tle.popularmovies.favorite.OnFavoriteMovieClickHandler;
 import com.example.tle.popularmovies.model.Movie;
+import com.example.tle.popularmovies.ui.MovieListAdapter;
+import com.example.tle.popularmovies.util.NetworkUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
-public class MainDiscoveryActivity extends AppCompatActivity implements TaskHandler {
+public class MainDiscoveryActivity extends AppCompatActivity
+        implements TaskHandler, OnFavoriteMovieClickHandler {
     String SORT_POPULAR = "popular";
     String SORT_RATING = "top_rated";
     ArrayList<Movie> movies = new ArrayList<>();
+
+    private static final String MOVIES_STATE = "movie_state";
+    private static final String QUERY_STATE = "query_state";
+    private static final String VIEW_STATE = "view_state";
+
+    RecyclerView recyclerView;
+    MovieListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_discovery);
-        getMovies(SORT_POPULAR);
+
+        recyclerView = findViewById(R.id.main_movies_rv);
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        adapter = new MovieListAdapter(getApplicationContext(), this);
+        recyclerView.setAdapter(adapter);
+
+        if (savedInstanceState == null) {
+            getMovies(SORT_POPULAR);
+        }
     }
 
     @Override
@@ -78,22 +99,6 @@ public class MainDiscoveryActivity extends AppCompatActivity implements TaskHand
         }
     }
 
-    private AdapterView.OnItemClickListener getGridViewOnItemClickListener() {
-        return new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startMovieDetailActivity(position);
-            }
-        };
-    }
-
-    private void startMovieDetailActivity(int position) {
-        Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class);
-        Movie movie = movies.get(position);
-        intent.putExtra("movie", movie);
-        startActivity(intent);
-    }
-
     @Override
     public void handleTaskResponse(String json, IOException ex) {
         if (ex != null) {
@@ -109,11 +114,8 @@ public class MainDiscoveryActivity extends AppCompatActivity implements TaskHand
     }
 
     private void bindMoviesToView() {
-        GridView gridView = findViewById(R.id.gridview);
-        MoviesAdapter moviesAdapter = new MoviesAdapter(this, movies);
-        gridView.setAdapter(moviesAdapter);
-
-        gridView.setOnItemClickListener(getGridViewOnItemClickListener());
+        adapter.setAllFavoriteMovies(movies);
+        adapter.notifyDataSetChanged();
     }
 
     private void parseMovies(String json) throws JSONException {
@@ -140,4 +142,34 @@ public class MainDiscoveryActivity extends AppCompatActivity implements TaskHand
         }
     }
 
+    @Override
+    public void handleFavoriteMovieRecylerItemClick(Movie movie) {
+        startMovieDetailActivity(movie);
+    }
+
+    private void startMovieDetailActivity(Movie movie) {
+        Intent intent = new Intent(getApplicationContext(), MovieDetailActivity.class);
+        intent.putExtra("movie", movie);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(MOVIES_STATE, movies);
+
+        Parcelable viewState = recyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(VIEW_STATE, viewState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        movies = (ArrayList<Movie>) savedInstanceState.getSerializable(MOVIES_STATE);
+        adapter.setAllFavoriteMovies(movies);
+
+        Parcelable viewState = savedInstanceState.getParcelable(VIEW_STATE);
+        recyclerView.getLayoutManager().onRestoreInstanceState(viewState);
+    }
 }
