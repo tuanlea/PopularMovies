@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies.ui;
+package com.example.tle.popularmovies.favorite;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -16,11 +16,11 @@ import java.util.List;
 public class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovieHolder> {
     private LayoutInflater layoutInflater;
     private List<Movie> allFavoriteMovies;
-    private OnRecyclerItemClickHandler onRecyclerItemClickHandler;
+    private OnFavoriteMovieClickHandler onFavoriteMovieClickHandler;
 
-    public FavoriteMovieListAdapter(Context context, OnRecyclerItemClickHandler onItemClickHandler) {
+    public FavoriteMovieListAdapter(Context context, OnFavoriteMovieClickHandler onItemClickHandler) {
         layoutInflater = LayoutInflater.from(context);
-        this.onRecyclerItemClickHandler = onItemClickHandler;
+        this.onFavoriteMovieClickHandler = onItemClickHandler;
     }
 
     @NonNull
@@ -42,7 +42,7 @@ public class FavoriteMovieListAdapter extends RecyclerView.Adapter<FavoriteMovie
             holder.favoriteMovieImageIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onRecyclerItemClickHandler.handleRecylerItemClick(current);
+                    onFavoriteMovieClickHandler.handleFavoriteMovieRecylerItemClick(current);
                 }
             });
         }

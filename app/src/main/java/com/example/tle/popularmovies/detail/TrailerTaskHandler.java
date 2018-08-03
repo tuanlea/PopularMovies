@@ -52,6 +52,7 @@ class TrailerTaskHandler implements com.example.tle.popularmovies.main.TaskHandl
             String id = reviewObj.getString("id");
             String isoOne = reviewObj.getString("iso_639_1");
             String isoTwo = reviewObj.getString("iso_3166_1");
+            String key = reviewObj.getString("key");
             String name = reviewObj.getString("name");
             String site = reviewObj.getString("site");
             String size = reviewObj.getString("size");
@@ -61,6 +62,7 @@ class TrailerTaskHandler implements com.example.tle.popularmovies.main.TaskHandl
             trailer.setId(id);
             trailer.setIsoOne(isoOne);
             trailer.setIsoTwo(isoTwo);
+            trailer.setKey(key);
             trailer.setName(name);
             trailer.setSite(site);
             trailer.setSize(size);

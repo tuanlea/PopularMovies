@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies.detail;
+package com.example.tle.popularmovies.main;
 
 import android.os.AsyncTask;
 import android.util.Log;

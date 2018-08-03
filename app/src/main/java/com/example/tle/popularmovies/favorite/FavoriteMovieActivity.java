@@ -12,13 +12,11 @@ import android.support.v7.widget.RecyclerView;
 import com.example.tle.popularmovies.detail.MovieDetailActivity;
 import com.example.tle.popularmovies.R;
 import com.example.tle.popularmovies.model.Movie;
-import com.example.tle.popularmovies.ui.FavoriteMovieListAdapter;
 import com.example.tle.popularmovies.ui.FavoriteMovieViewModel;
-import com.example.tle.popularmovies.ui.OnRecyclerItemClickHandler;
 
 import java.util.List;
 
-public class FavoriteMovieActivity extends AppCompatActivity implements OnRecyclerItemClickHandler {
+public class FavoriteMovieActivity extends AppCompatActivity implements OnFavoriteMovieClickHandler {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +41,7 @@ public class FavoriteMovieActivity extends AppCompatActivity implements OnRecycl
     }
 
     @Override
-    public void handleRecylerItemClick(Movie movie) {
+    public void handleFavoriteMovieRecylerItemClick(Movie movie) {
         startMovieDetailActivity(movie);
     }
 

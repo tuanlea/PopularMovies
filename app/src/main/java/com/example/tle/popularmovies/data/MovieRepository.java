@@ -13,14 +13,14 @@ import java.util.List;
  * In the most common example, the Repository implements the logic for deciding whether to fetch
  * data from a network or use results cached in a local database.
  */
-public class FavoriteMovieRepository {
-    private FavoriteMovieDao favoriteMovieDao;
+public class MovieRepository {
+    private MovieDao movieDao;
     private LiveData<List<Movie>> allFavoriteMovies;
 
-    public FavoriteMovieRepository(Application application){
+    public MovieRepository(Application application){
         MovieRoomDatabase db = MovieRoomDatabase.getDatabase(application);
-        favoriteMovieDao = db.favoriteMovieDao();
-        allFavoriteMovies = favoriteMovieDao.getFavoriteMovieList();
+        movieDao = db.movieDao();
+        allFavoriteMovies = movieDao.getFavoriteMovieList();
     }
 
     public LiveData<List<Movie>> getAllFavoriteMovies() {
@@ -28,17 +28,17 @@ public class FavoriteMovieRepository {
     }
 
     public void insert(Movie movie) {
-        new insertAsyncTask(favoriteMovieDao).execute(movie);
+        new insertAsyncTask(movieDao).execute(movie);
     }
 
     public void remove(Movie movie) {
-        new removeAsyncTask(favoriteMovieDao).execute(movie);
+        new removeAsyncTask(movieDao).execute(movie);
     }
 
     static class insertAsyncTask extends AsyncTask<Movie, Void, Void> {
-        private FavoriteMovieDao asyncTaskDao;
+        private MovieDao asyncTaskDao;
 
-        insertAsyncTask(FavoriteMovieDao dao) {
+        insertAsyncTask(MovieDao dao) {
             asyncTaskDao = dao;
         }
 
@@ -49,10 +49,10 @@ public class FavoriteMovieRepository {
         }
     }
 
-    private class removeAsyncTask extends  AsyncTask<Movie, Void, Void> {
-        private FavoriteMovieDao asyncTaskDao;
+    static class removeAsyncTask extends  AsyncTask<Movie, Void, Void> {
+        private MovieDao asyncTaskDao;
 
-        public removeAsyncTask(FavoriteMovieDao favoriteMovieDao) {
+        removeAsyncTask(MovieDao favoriteMovieDao) {
             asyncTaskDao = favoriteMovieDao;
         }
 

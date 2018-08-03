@@ -4,6 +4,7 @@ class Trailer {
     String id;
     String isoOne;
     String isoTwo;
+    String key;
     String name;
     String site;
     String size;
@@ -32,6 +33,14 @@ class Trailer {
 
     public void setIsoTwo(String isoTwo) {
         this.isoTwo = isoTwo;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getName() {

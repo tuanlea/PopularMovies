@@ -2,7 +2,9 @@ package com.example.tle.popularmovies.detail;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener, OnTrailerClickHandler {
 
     Movie movie;
 
@@ -181,10 +183,26 @@ public class MovieDetailActivity extends AppCompatActivity
 
     public void setTrailersToView(List<Trailer> trailers) {
         RecyclerView recyclerView = findViewById(R.id.movie_trailers_rv);
-        TrailerListAdapter adapter = new TrailerListAdapter(getApplicationContext());
+        TrailerListAdapter adapter = new TrailerListAdapter(getApplicationContext(), this);
         adapter.setTrailers(trailers);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
                 LinearLayoutManager.VERTICAL, false));
+    }
+
+    @Override
+    public void handleTrailerRecylerItemClick(Trailer trailer) {
+        Toast.makeText(getApplicationContext(), "this trailer: " + trailer.getId(),
+                Toast.LENGTH_SHORT).show();
+        String key = trailer.getKey();
+        String youtubeBaseURL = "https://www.youtube.com/watch?v=" + key;
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + key));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + key));
+        try {
+            getApplicationContext().startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            getApplicationContext().startActivity(webIntent);
+        }
     }
 }

@@ -12,7 +12,7 @@ import com.example.tle.popularmovies.model.Movie;
 import java.util.List;
 
 @Dao
-public interface FavoriteMovieDao {
+public interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Movie movie);
 

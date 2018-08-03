@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies.ui;
+package com.example.tle.popularmovies.favorite;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -30,6 +30,6 @@ public abstract class MovieRoomDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract FavoriteMovieDao favoriteMovieDao();
+    public abstract MovieDao movieDao();
 
 }

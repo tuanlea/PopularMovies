@@ -13,7 +13,6 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.tle.popularmovies.detail.MovieDetailActivity;
-import com.example.tle.popularmovies.detail.RetrieveMoviesTask;
 import com.example.tle.popularmovies.util.NetworkUtils;
 import com.example.tle.popularmovies.R;
 import com.example.tle.popularmovies.favorite.FavoriteMovieActivity;
