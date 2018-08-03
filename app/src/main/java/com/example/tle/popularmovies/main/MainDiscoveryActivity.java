@@ -36,7 +36,6 @@ public class MainDiscoveryActivity extends AppCompatActivity
     ArrayList<Movie> movies = new ArrayList<>();
 
     private static final String MOVIES_STATE = "movie_state";
-    private static final String QUERY_STATE = "query_state";
     private static final String VIEW_STATE = "view_state";
 
     RecyclerView recyclerView;
