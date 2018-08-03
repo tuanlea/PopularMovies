@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.tle.popularmovies.model.TaskHandler;
 import com.example.tle.popularmovies.model.Trailer;
 
 import org.json.JSONArray;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class TrailerTaskHandler implements com.example.tle.popularmovies.main.TaskHandler {
+class TrailerTaskHandler implements TaskHandler {
 
     private Context context;
     private MovieDetailActivity movieDatailActivity;

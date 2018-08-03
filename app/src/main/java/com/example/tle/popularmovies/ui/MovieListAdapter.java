@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tle.popularmovies.R;
-import com.example.tle.popularmovies.favorite.OnFavoriteMovieClickHandler;
 import com.example.tle.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -16,12 +15,12 @@ import java.util.List;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieHolder> {
     private LayoutInflater layoutInflater;
-    private List<Movie> allFavoriteMovies;
-    private OnFavoriteMovieClickHandler onFavoriteMovieClickHandler;
+    private List<Movie> allMovies;
+    private OnMovieClickHandler onMovieClickHandler;
 
-    public MovieListAdapter(Context context, OnFavoriteMovieClickHandler onItemClickHandler) {
+    public MovieListAdapter(Context context, OnMovieClickHandler onItemClickHandler) {
         layoutInflater = LayoutInflater.from(context);
-        this.onFavoriteMovieClickHandler = onItemClickHandler;
+        this.onMovieClickHandler = onItemClickHandler;
     }
 
     @NonNull
@@ -34,8 +33,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MovieHolder holder, int position) {
-        if (allFavoriteMovies != null) {
-            final Movie current = allFavoriteMovies.get(position);
+        if (allMovies != null) {
+            final Movie current = allMovies.get(position);
             String posterPathFull = current.getPosterPathFull();
             Picasso.with(layoutInflater.getContext())
                     .load(posterPathFull)
@@ -43,7 +42,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieHolder> {
             holder.movieImageIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onFavoriteMovieClickHandler.handleFavoriteMovieRecylerItemClick(current);
+                    onMovieClickHandler.handleMovieRecylerItemClick(current);
                 }
             });
         }
@@ -51,14 +50,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieHolder> {
 
     @Override
     public int getItemCount() {
-        if (allFavoriteMovies == null) {
+        if (allMovies == null) {
             return 0;
         }
-        return allFavoriteMovies.size();
+        return allMovies.size();
     }
 
-    public void setAllFavoriteMovies(List<Movie> allFavoriteMovies) {
-        this.allFavoriteMovies = allFavoriteMovies;
+    public void setAllMovies(List<Movie> allMovies) {
+        this.allMovies = allMovies;
         notifyDataSetChanged();
     }
 }

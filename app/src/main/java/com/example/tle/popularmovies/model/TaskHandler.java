@@ -1,4 +1,4 @@
-package com.example.tle.popularmovies.main;
+package com.example.tle.popularmovies.model;
 
 import java.io.IOException;
 

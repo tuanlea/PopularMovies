@@ -3,7 +3,7 @@ package com.example.tle.popularmovies.detail;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.tle.popularmovies.main.TaskHandler;
+import com.example.tle.popularmovies.model.TaskHandler;
 import com.example.tle.popularmovies.util.NetworkUtils;
 
 import java.io.IOException;

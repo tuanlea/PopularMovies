@@ -1,10 +1,8 @@
 package com.example.tle.popularmovies.main;
 
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +15,10 @@ import android.widget.Toast;
 import com.example.tle.popularmovies.R;
 import com.example.tle.popularmovies.detail.MovieDetailActivity;
 import com.example.tle.popularmovies.favorite.FavoriteMovieActivity;
-import com.example.tle.popularmovies.favorite.OnFavoriteMovieClickHandler;
 import com.example.tle.popularmovies.model.Movie;
+import com.example.tle.popularmovies.model.TaskHandler;
 import com.example.tle.popularmovies.ui.MovieListAdapter;
+import com.example.tle.popularmovies.ui.OnMovieClickHandler;
 import com.example.tle.popularmovies.util.NetworkUtils;
 
 import org.json.JSONArray;
@@ -27,12 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class MainDiscoveryActivity extends AppCompatActivity
-        implements TaskHandler, OnFavoriteMovieClickHandler {
+        implements TaskHandler, OnMovieClickHandler {
     String SORT_POPULAR = "popular";
     String SORT_RATING = "top_rated";
     ArrayList<Movie> movies = new ArrayList<>();
@@ -114,7 +112,7 @@ public class MainDiscoveryActivity extends AppCompatActivity
     }
 
     private void bindMoviesToView() {
-        adapter.setAllFavoriteMovies(movies);
+        adapter.setAllMovies(movies);
         adapter.notifyDataSetChanged();
     }
 
@@ -143,7 +141,7 @@ public class MainDiscoveryActivity extends AppCompatActivity
     }
 
     @Override
-    public void handleFavoriteMovieRecylerItemClick(Movie movie) {
+    public void handleMovieRecylerItemClick(Movie movie) {
         startMovieDetailActivity(movie);
     }
 
@@ -167,7 +165,7 @@ public class MainDiscoveryActivity extends AppCompatActivity
         super.onRestoreInstanceState(savedInstanceState);
 
         movies = (ArrayList<Movie>) savedInstanceState.getSerializable(MOVIES_STATE);
-        adapter.setAllFavoriteMovies(movies);
+        adapter.setAllMovies(movies);
 
         Parcelable viewState = savedInstanceState.getParcelable(VIEW_STATE);
         recyclerView.getLayoutManager().onRestoreInstanceState(viewState);
