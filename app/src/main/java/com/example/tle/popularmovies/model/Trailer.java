@@ -1,6 +1,6 @@
-package com.example.tle.popularmovies.detail;
+package com.example.tle.popularmovies.model;
 
-class Trailer {
+public class Trailer {
     String id;
     String isoOne;
     String isoTwo;

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.tle.popularmovies.R;
 import com.example.tle.popularmovies.model.Movie;
 import com.example.tle.popularmovies.model.MovieReview;
+import com.example.tle.popularmovies.model.Trailer;
 import com.example.tle.popularmovies.ui.FavoriteMovieViewModel;
 import com.example.tle.popularmovies.util.NetworkUtils;
 import com.squareup.picasso.Picasso;

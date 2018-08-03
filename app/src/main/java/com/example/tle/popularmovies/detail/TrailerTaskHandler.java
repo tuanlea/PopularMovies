@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.tle.popularmovies.model.Trailer;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

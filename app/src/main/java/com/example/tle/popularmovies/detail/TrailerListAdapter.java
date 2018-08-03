@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tle.popularmovies.R;
-import com.example.tle.popularmovies.model.MovieReview;
+import com.example.tle.popularmovies.model.Trailer;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ class TrailerListAdapter extends RecyclerView.Adapter<TrailerHolder> {
     @Override
     public void onBindViewHolder(@NonNull TrailerHolder holder, int position) {
         final Trailer trailer = this.trailers.get(position);
-        holder.idTv.setText(trailer.getId());
+        holder.idTv.setText("Trailer:" + trailer.getName());
         holder.idTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
